@@ -1,25 +1,45 @@
 from django.shortcuts import render,HttpResponse,HttpResponseRedirect
 from django.contrib import messages
 from django.contrib.auth.forms import AuthenticationForm
-from .forms import SignUpForm
+from .forms import SignUpForm,DomesticForm,InternationalForm, ParcelForm, ServicesForm
 from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.decorators import login_required
+from .models import Parcel, Services, Domestic
 
-# Create your views here.
+
 def base(request):
     return render(request,'base.html')
 
 def home(request):
-    return render(request,'home.html')
+    dm=DomesticForm
+    im=InternationalForm
+    return render(request,'home.html',{"form":dm,"form1":im})
+
+
+def parcel(request):
+    if request.method == 'POST':
+        print(request.POST)
+    par = ParcelForm
+    ser = ServicesForm
+    return render(request, 'parcel.html', {'par': par, 'ser': ser})
+
 
 def booking(request):
     return render(request,'booking.html')
 
+
 def tracking(request):
-    return render(request,'tracking.html')
+    return render(request, 'tracking.html')
+
 
 def profile(request):
     return render(request,'profiles.html')
+
+
+def order_summary(request):
+    summary = request.session
+    print(summary)
+    return render(request, 'order_summary.html')
+
 
 def sign(request):
     if request.method == "POST":
