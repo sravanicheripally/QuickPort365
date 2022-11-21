@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+</head>
+<body>
+<h1>Payment Details</h1>
+<form action="" method="get">
+Choose your Delivery service:
+<input name='service' type="submit" value="Standard" class="btn btn-primary">
+<input name='service' type="submit" value="Premium" class="btn btn-primary">
+</form>
+<br>
+{% if price %}
+Total price of delivery ---- {{price}}<br><br>
+Shipment duration ---- {{days}}-{{days}}/2 days
+<a href="address">Proceed</a>
+<br><hr>
+
+<br>
+<br>
+
+{% endif %}
+</body>
+</html>

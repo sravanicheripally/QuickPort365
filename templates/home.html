@@ -2,27 +2,22 @@
 {% block head_content %}
   {% endblock %}
 {% block content %}
-
-
-
-
-
+<form action="hom" method="get">
+Choose your Delivery Range:
+<input name='range' type="submit" value="Domestic" class="btn btn-primary">
+<input name='range' type="submit" value="International" class="btn btn-primary">
+</form>
 <div class="col-md-4".col-md-3>
-<form action="/parcel/" method="post">
+  {% if range %}
+<form action="" method="post">
   {% csrf_token %}
-    <button name='domestic' type="button" class="btn btn-primary">Domestic</button>
     {{form.as_p}}
-    <input type="submit" value="Get">
+    <input type="submit" value="Submit">
 </form>
+  {% endif %}
 </div>
-
 <div class="col-md-4".col-md-4>
-<form action="/parcel/" method="post">
-  {% csrf_token %}
-    <button name='international' type="button" class="btn btn-primary">International</button>
-    {{form1.as_p}}
-    <input type="submit" value="Get">
-</form>
+
 </div>
 
 {% endblock %}

@@ -1,6 +1,5 @@
 from django.db import models
 
-# Create your models here.
 
 class Domestic(models.Model):
         origin = models.IntegerField()
@@ -14,7 +13,7 @@ class International(models.Model):
 
 
 class Parcel(models.Model):
-    weight = models.IntegerField()
+    item_weight = models.IntegerField()
     item_name = models.CharField(max_length=200)
 
 
