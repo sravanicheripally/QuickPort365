@@ -32,5 +32,6 @@ urlpatterns = [
     path('summary', views.order_summary, name='summary'),
     path('payment', views.payment_details, name='payment'),
     path('address', views.address_enter, name='address'),
-    path('payment_options', views.payment_options, name='payment_options')
+    path('payment_options', views.payment_options, name='payment_options'),
+    path('success', views.success, name='success')
 ]

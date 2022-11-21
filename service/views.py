@@ -1,9 +1,11 @@
+import razorpay
 from django.shortcuts import render,HttpResponse,HttpResponseRedirect
 from django.contrib import messages
 from django.contrib.auth.forms import AuthenticationForm
 from .forms import SignUpForm,DomesticForm,InternationalForm, ParcelForm, ServicesForm
 from django.contrib.auth import authenticate, login, logout
 from .models import Parcel, Services, Domestic
+from django.views.decorators.csrf import csrf_exempt
 
 
 def base(request):
@@ -75,12 +77,23 @@ def address_enter(request):
 
 
 def payment_options(request):
+    if request.method == 'POST':
+        amount  = 50000
+        order_currency = 'INR'
+        client = razorpay.Client(auth=('rzp_test_6lrPUDLV0dRFf9', 'OjNBfOuoD0M8yl3Gkeo9YuJK'))
+        payment = client.order.create({'amount': amount, 'currency': 'INR', 'payment_capture': '1'})
+        return render(request, 'payment_options.html', {'price': price, 'delivery': delivery_address})
     price = request.session['price']
     delivery_address = ' '
     delivery_address += request.session['address']['delivery_area']+' ,'
     delivery_address += request.session['address']['delivery_location']+', '
     delivery_address += request.session['address']['delivery_pincode']
     return render(request, 'payment_options.html', {'price': price, 'delivery': delivery_address})
+
+
+@csrf_exempt
+def success(request):
+    return render(request, 'success.html')
 
 
 def sign(request):
