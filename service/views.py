@@ -1,25 +1,87 @@
 from django.shortcuts import render,HttpResponse,HttpResponseRedirect
 from django.contrib import messages
 from django.contrib.auth.forms import AuthenticationForm
-from .forms import SignUpForm
+from .forms import SignUpForm,DomesticForm,InternationalForm, ParcelForm, ServicesForm
 from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.decorators import login_required
+from .models import Parcel, Services, Domestic
 
-# Create your views here.
+
 def base(request):
-    return render(request,'base.html')
+    return render(request, 'base.html')
+
 
 def home(request):
-    return render(request,'home.html')
+    if request.method == 'POST':
+        print('post mehod')
+        return HttpResponseRedirect('parcel')
+    range = request.GET.get('range')
+    if range == 'Domestic':
+        form = DomesticForm
+    else:
+        form = InternationalForm
+    return render(request, 'home.html', {"form": form, 'range': range})
+
+
+def parcel(request):
+    if request.method == 'POST':
+        print(request.POST, 'yes')
+        request.session['summary'] = request.POST
+        print(request.session['summary'])
+        return HttpResponseRedirect('summary')
+    par = ParcelForm
+    ser = ServicesForm
+    return render(request, 'parcel.html', {'par': par, 'ser': ser})
+
 
 def booking(request):
-    return render(request,'booking.html')
+    return render(request, 'booking.html')
+
 
 def tracking(request):
-    return render(request,'tracking.html')
+    return render(request, 'tracking.html')
+
 
 def profile(request):
     return render(request,'profiles.html')
+
+
+def order_summary(request):
+    summary = request.session['summary']
+    print(summary)
+    return render(request, 'order_summary.html', {'summary': summary})
+
+
+def payment_details(request):
+        print(request.GET)
+        if request.GET.get('service') == 'Standard':
+            price = int(request.session['summary']['item_weight'])*120
+            request.session['price'] = price
+            days = 3
+            return render(request, 'payment_details.html', {'price': price, 'days': days})
+        if request.GET.get('service') == 'Premium':
+            price = int(request.session['summary']['item_weight']) * 250
+            request.session['price'] = price
+            days = 1
+            return render(request, 'payment_details.html', {'price': price, 'days': days})
+        return render(request, 'payment_details.html')
+
+
+def address_enter(request):
+    if request.method == 'POST':
+        request.session['address'] = request.POST
+        print(request.session['address'])
+        return HttpResponseRedirect('payment_options')
+    return render(request, 'address.html')
+
+
+def payment_options(request):
+    price = request.session['price']
+    delivery_address = ' '
+    delivery_address += request.session['address']['delivery_area']+' ,'
+    delivery_address += request.session['address']['delivery_location']+', '
+    delivery_address += request.session['address']['delivery_pincode']
+    return render(request, 'payment_options.html', {'price': price, 'delivery': delivery_address})
+
 
 def sign(request):
     if request.method == "POST":

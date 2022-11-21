@@ -1,4 +1,23 @@
 {% extends 'base.html' %}
+{% block head_content %}
+  {% endblock %}
 {% block content %}
-home page
+<form action="hom" method="get">
+Choose your Delivery Range:
+<input name='range' type="submit" value="Domestic" class="btn btn-primary">
+<input name='range' type="submit" value="International" class="btn btn-primary">
+</form>
+<div class="col-md-4".col-md-3>
+  {% if range %}
+<form action="" method="post">
+  {% csrf_token %}
+    {{form.as_p}}
+    <input type="submit" value="Submit">
+</form>
+  {% endif %}
+</div>
+<div class="col-md-4".col-md-4>
+
+</div>
+
 {% endblock %}

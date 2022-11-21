@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<h1>Pickup Address</h1>
+<form method="post">
+    {% csrf_token %}
+    <label>Area</label>
+    <input type='text' name="pickup_area" required>
+     <label>Location</label>
+    <input type="text" name="pickup_location" required>
+     <label>Pincode</label>
+    <input type="text" name="pickup_pincode" required>
+<h1>Delivery Address</h1>
+    <label>Area</label>
+    <input type='text' name="delivery_area" required>
+     <label>Location</label>
+    <input type="text" name="delivery_location" required>
+     <label>Pincode</label>
+    <input type="text" name="delivery_pincode" required>
+    <br><br>
+    <input type="submit" value="submit">
+</form>
+</body>
+</html>
