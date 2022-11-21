@@ -7,19 +7,20 @@ from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 def base(request):
-    return render(request,'base.html')
+  return render(request,'base.html')
 
 def home(request):
-    return render(request,'home.html')
+  print("hello team")
+  return render(request,'home.html')
 
 def booking(request):
-    return render(request,'booking.html')
+  return render(request,'booking.html')
 
 def tracking(request):
-    return render(request,'tracking.html')
+  return render(request,'tracking.html')
 
 def profile(request):
-    return render(request,'profiles.html')
+  return render(request,'profiles.html')
 
 def sign(request):
     if request.method == "POST":
