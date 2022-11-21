@@ -10,6 +10,7 @@ def base(request):
     return render(request,'base.html')
 
 def home(request):
+    print('hello')
     return render(request,'home.html')
 
 def booking(request):
