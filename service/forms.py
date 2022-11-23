@@ -14,9 +14,15 @@ class SignUpForm(UserCreationForm):
 
 
 class DomesticForm(forms.ModelForm):
+    # origin=forms.IntegerField()
     class Meta:
         model = Domestic
         fields = "__all__"
+
+        # def clean(self):
+        #     origin=self.cleaned_data['enter a valid pincode']
+        #     if origin >=6:
+        #
 
 
 class InternationalForm(forms.ModelForm):

@@ -6,6 +6,8 @@ from .forms import SignUpForm,DomesticForm,InternationalForm, ParcelForm, Servic
 from django.contrib.auth import authenticate, login, logout
 from .models import Parcel, Services, Domestic
 from django.views.decorators.csrf import csrf_exempt
+from django.contrib.auth.models import User
+
 
 
 def base(request):
@@ -43,8 +45,10 @@ def tracking(request):
     return render(request, 'tracking.html')
 
 
-def profile(request):
-    return render(request,'profiles.html')
+def profiles(request):
+    fm = User.objects.all()
+    print(fm,'.......................................')
+    return render(request,'profiles.html',{'form':fm})
 
 
 def order_summary(request):
@@ -118,21 +122,23 @@ def logins(request):
         if user is not None:
           login(request, user)
           messages.success(request, 'Logged in successfully !!')
-          return HttpResponseRedirect('/home/')
+          return HttpResponseRedirect('/hom')
     else:
       fm = AuthenticationForm()
     return render(request, 'login.html', {'form':fm})
   else:
-    return HttpResponseRedirect('/additem/')
+    return HttpResponseRedirect('/sign')
 
 
 def profile(request):
   if request.user.is_authenticated:
     return render(request, 'profile.html', {'name': request.user})
   else:
-    return HttpResponseRedirect('/login/')
+    return HttpResponseRedirect('/login')
 
 
 def user_logout(request):
     logout(request)
-    return HttpResponseRedirect('/login/')
+    return HttpResponseRedirect('/sign')
+
+
