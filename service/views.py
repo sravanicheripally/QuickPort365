@@ -4,7 +4,7 @@ from django.contrib import messages
 from django.contrib.auth.forms import AuthenticationForm
 from .forms import SignUpForm,DomesticForm,InternationalForm, ParcelForm, ServicesForm
 from django.contrib.auth import authenticate, login, logout
-from .models import Parcel, Services, Domestic
+from .models import Parcel, Services, Domestic, Details
 from django.views.decorators.csrf import csrf_exempt
 
 
@@ -14,19 +14,24 @@ def base(request):
 
 def home(request):
     if request.method == 'POST':
-        print('post mehod')
+        request.session['range'] = request.POST
+        print(request.session['range'])
+        print('post method')
         return HttpResponseRedirect('parcel')
     range = request.GET.get('range')
+
     if range == 'Domestic':
         form = DomesticForm
+
     else:
         form = InternationalForm
+
     return render(request, 'home.html', {"form": form, 'range': range})
 
 
 def parcel(request):
     if request.method == 'POST':
-        print(request.POST, 'yes')
+        print(request.POST, '......yes')
         request.session['summary'] = request.POST
         print(request.session['summary'])
         return HttpResponseRedirect('summary')
@@ -55,6 +60,8 @@ def order_summary(request):
 
 def payment_details(request):
         print(request.GET)
+        request.session['service'] = request.GET['service']
+        print(request.session['service'])
         if request.GET.get('service') == 'Standard':
             price = int(request.session['summary']['item_weight'])*120
             request.session['price'] = price
@@ -93,7 +100,28 @@ def payment_options(request):
 
 @csrf_exempt
 def success(request):
-    return render(request, 'success.html')
+
+    l = [request.session['summary'],
+    request.session['address'],
+    request.session['range'],
+    request.session['price'],
+    request.session['service']]
+    order = Details(origin=request.session['range']['origin'], destination=request.session['range']['destination'],
+                    item_weight=request.session['summary']['item_weight'],item_name=request.session['summary']['item_name'],
+                    date=request.session['summary']['date'], from_whom=request.session['summary']['select'],
+                    image=request.session['summary']['image'], services=request.session['service'],
+                    price=request.session['price'] )
+    order.save()
+
+    if request.GET.get('service') == 'Standard':
+        print('Standard')
+
+    else:
+        print('Premium')
+
+
+
+    return render(request, 'success.html', {'order': order})
 
 
 def sign(request):
